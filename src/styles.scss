@@ -1,1 +1,21 @@
-/* You can add global styles to this file, and also import other style files */
+html,
+body {
+  height: 100%;
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  background: var(--p-content-background);
+  color: var(--p-text-color);
+}
+
+// PrimeNG's styled mode ships components only, so the few utilities the layouts rely on live here.
+.d-flex {
+  display: flex;
+}
+
+.w-100 {
+  width: 100%;
+}
+
+.p-3 {
+  padding: 1rem;
+}

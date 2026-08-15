@@ -1,0 +1,13 @@
+.app-header {
+  display: flex;
+  align-items: center;
+  height: 3.5rem;
+  padding: 0 1rem;
+  border-bottom: 1px solid var(--p-content-border-color);
+  background: var(--p-content-background);
+}
+
+.app-title {
+  font-size: 1.125rem;
+  font-weight: 600;
+}
