@@ -7,16 +7,21 @@ The app runs entirely on mock data (static JSON + `localStorage`), so there is n
 ## Screenshots
 
 | Sign in | Customers |
-| --- | --- |
-| ![Sign in](docs/screenshots/login.png) | ![Customers](docs/screenshots/dashboard.png) |
+<img width="529" height="448" alt="image" src="https://github.com/user-attachments/assets/a54479e9-93ee-43ce-8d6e-b074e0debdc8" />
+<img width="1912" height="524" alt="image" src="https://github.com/user-attachments/assets/a551972c-2cf5-4d7e-8108-24a06a86e7a6" />
+
+
 
 | Customer details | Account transactions |
 | --- | --- |
-| ![Customer details](docs/screenshots/customer-details.png) | ![Transactions](docs/screenshots/transactions.png) |
+<img width="1919" height="464" alt="image" src="https://github.com/user-attachments/assets/e4bd76fa-bb57-4227-8cb8-a678a4ee331b" />
+<img width="1902" height="685" alt="image" src="https://github.com/user-attachments/assets/56ea82b0-ab3b-420a-a14f-cd2b7d6d0b43" />
+
 
 | New transaction | Monthly insights |
 | --- | --- |
-| ![New transaction](docs/screenshots/transaction-create.png) | ![Insights](docs/screenshots/insights.png) |
+<img width="610" height="453" alt="image" src="https://github.com/user-attachments/assets/c828ce07-ca69-4c57-8799-e6af294daa59" />
+
 
 ## Getting started
 
