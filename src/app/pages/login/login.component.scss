@@ -1,0 +1,28 @@
+.login-card {
+  display: block;
+  width: 100%;
+  max-width: 24rem;
+}
+
+.login-title {
+  margin: 0 0 1.5rem;
+  font-size: 1.25rem;
+  font-weight: 600;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.375rem;
+  margin-bottom: 1.25rem;
+
+  label {
+    font-size: 0.875rem;
+    font-weight: 500;
+  }
+}
+
+.field-error {
+  color: var(--p-red-500, #e24c4c);
+  font-size: 0.75rem;
+}

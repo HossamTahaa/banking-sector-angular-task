@@ -1,0 +1,38 @@
+[
+  {
+    "id": "T9001",
+    "accountId": "A1001",
+    "date": "2025-12-01",
+    "type": "Debit",
+    "amount": 250.75,
+    "merchant": "Carrefour",
+    "category": "Groceries"
+  },
+  {
+    "id": "T9002",
+    "accountId": "A1001",
+    "date": "2025-12-05",
+    "type": "Debit",
+    "amount": 1200.0,
+    "merchant": "Vodafone",
+    "category": "Bills"
+  },
+  {
+    "id": "T9003",
+    "accountId": "A1001",
+    "date": "2025-12-25",
+    "type": "Credit",
+    "amount": 8500.0,
+    "merchant": "Company Salary",
+    "category": "Income"
+  },
+  {
+    "id": "T9101",
+    "accountId": "A2001",
+    "date": "2025-12-10",
+    "type": "Debit",
+    "amount": 75.5,
+    "merchant": "Amazon",
+    "category": "Shopping"
+  }
+]

@@ -1,0 +1,4 @@
+[
+  { "code": "Debit", "label": "Debit" },
+  { "code": "Credit", "label": "Credit" }
+]

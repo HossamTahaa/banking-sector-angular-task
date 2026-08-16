@@ -1,3 +1,38 @@
 <app-blank-layout>
-  <h1>Login</h1>
+  <section class="panel login-card">
+    <h1 class="login-title">Sign in</h1>
+
+    <form [formGroup]="form" (ngSubmit)="submit()">
+      <div class="field">
+        <label for="email">Email</label>
+        <input
+          id="email"
+          type="email"
+          pInputText
+          formControlName="email"
+          autocomplete="email"
+          [fluid]="true"
+        />
+        @if (emailError(); as message) {
+          <small class="field-error">{{ message }}</small>
+        }
+      </div>
+
+      <div class="field">
+        <label for="password">Password</label>
+        <input
+          id="password"
+          pInputPassword
+          formControlName="password"
+          autocomplete="current-password"
+          [fluid]="true"
+        />
+        @if (passwordError(); as message) {
+          <small class="field-error">{{ message }}</small>
+        }
+      </div>
+
+      <button pButton type="submit" [fluid]="true" [disabled]="submitDisabled()">Sign in</button>
+    </form>
+  </section>
 </app-blank-layout>

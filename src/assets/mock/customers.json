@@ -1,0 +1,18 @@
+[
+  {
+    "CIF": "C001",
+    "name": "Ahmed Ali",
+    "nationalId": "29810251234567",
+    "segment": "Retail",
+    "email": "ahmed.ali@mail.com",
+    "phone": "+201001234567"
+  },
+  {
+    "CIF": "C002",
+    "name": "Mona Hassan",
+    "nationalId": "29904151234568",
+    "segment": "Priority",
+    "email": "mona.hassan@mail.com",
+    "phone": "+201112345678"
+  }
+]

@@ -1,15 +1,11 @@
-export type AccountType = 'current' | 'savings' | 'deposit';
-
-export type AccountStatus = 'active' | 'frozen' | 'closed';
+export type AccountStatus = 'Active' | 'Inactive';
 
 export interface Account {
   id: string;
-  cif: string;
-  accountNumber: string;
-  iban: string;
-  type: AccountType;
+  customerId: string;
+  type: string;
   currency: string;
   balance: number;
+  iban: string;
   status: AccountStatus;
-  openedAt: string;
 }

@@ -1,11 +1,8 @@
-export type CustomerStatus = 'active' | 'dormant' | 'blocked';
-
 export interface Customer {
-  cif: string;
-  fullName: string;
+  CIF: string;
+  name: string;
   nationalId: string;
-  phone: string;
+  segment: string;
   email: string;
-  branch: string;
-  status: CustomerStatus;
+  phone: string;
 }

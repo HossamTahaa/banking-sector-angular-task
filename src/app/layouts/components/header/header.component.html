@@ -1,3 +1,13 @@
 <header class="app-header">
   <span class="app-title">Banking Portal</span>
+
+  <div class="header-actions">
+    @if (currentUser(); as email) {
+      <span class="header-user">{{ email }}</span>
+    }
+
+    <button pButton type="button" severity="secondary" [text]="true" (click)="logout()">
+      Sign out
+    </button>
+  </div>
 </header>

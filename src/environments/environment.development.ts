@@ -1,4 +1,5 @@
 export const environment = {
   production: false,
-  apiUrl: 'http://localhost:3000/api',
+  // Served from the static JSON under src/assets/mock until a real API exists.
+  apiUrl: 'assets/mock',
 };

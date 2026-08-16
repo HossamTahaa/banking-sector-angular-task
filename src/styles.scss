@@ -19,3 +19,17 @@ body {
 .p-3 {
   padding: 1rem;
 }
+
+// Plain surface shared by the pages. A bordered box needs no component behind it.
+.panel {
+  padding: 1rem;
+  border: 1px solid var(--p-content-border-color);
+  border-radius: var(--p-content-border-radius);
+  background: var(--p-content-background);
+}
+
+.panel-title {
+  margin: 0 0 0.75rem;
+  font-size: 1rem;
+  font-weight: 600;
+}

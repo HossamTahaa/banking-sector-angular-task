@@ -1,12 +1,19 @@
-export type TransactionDirection = 'debit' | 'credit';
+export type TransactionType = 'Debit' | 'Credit';
 
 export interface Transaction {
   id: string;
   accountId: string;
-  postedAt: string;
-  description: string;
-  reference: string;
-  direction: TransactionDirection;
+  date: string;
+  type: TransactionType;
   amount: number;
-  currency: string;
+  merchant: string;
+  category: string;
+}
+
+// The store generates the id, so callers supply everything else.
+export type NewTransaction = Omit<Transaction, 'id'>;
+
+export interface TransactionTypeOption {
+  code: TransactionType;
+  label: string;
 }

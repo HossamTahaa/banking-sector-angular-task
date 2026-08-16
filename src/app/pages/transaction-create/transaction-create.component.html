@@ -1,0 +1,104 @@
+<app-main-layout>
+  <div class="page">
+    <a class="back-link" [routerLink]="backLink()">Back to transactions</a>
+
+    <h1 class="page-title">New transaction</h1>
+
+    @if (account(); as currentAccount) {
+      <p class="account-meta">
+        {{ currentAccount.id }} · {{ currentAccount.type }} · available
+        {{ balance() | number: '1.2-2' }} {{ currentAccount.currency }}
+      </p>
+    }
+
+    <section class="panel">
+      <form [formGroup]="form" (ngSubmit)="submit()">
+        <div class="field">
+          <label for="type">Type</label>
+          <p-select
+            inputId="type"
+            formControlName="type"
+            optionLabel="label"
+            optionValue="code"
+            placeholder="Select a type"
+            [options]="typeOptions()"
+            [fluid]="true"
+          />
+          @if (errors().type; as message) {
+            <small class="field-error">{{ message }}</small>
+          }
+        </div>
+
+        <div class="field">
+          <label for="amount">Amount</label>
+          <input
+            id="amount"
+            type="number"
+            step="0.01"
+            pInputText
+            formControlName="amount"
+            placeholder="0.00"
+            [fluid]="true"
+          />
+          @if (errors().amount; as message) {
+            <small class="field-error">{{ message }}</small>
+          }
+        </div>
+
+        <div class="field">
+          <label for="date">Date</label>
+          <p-datepicker
+            inputId="date"
+            formControlName="date"
+            dateFormat="dd M yy"
+            placeholder="Select a date"
+            [maxDate]="today"
+            [readonlyInput]="true"
+            [fluid]="true"
+          />
+          @if (errors().date; as message) {
+            <small class="field-error">{{ message }}</small>
+          }
+        </div>
+
+        <div class="field">
+          <label for="merchant">Merchant</label>
+          <input
+            id="merchant"
+            type="text"
+            pInputText
+            formControlName="merchant"
+            placeholder="Where the money went"
+            [fluid]="true"
+          />
+          @if (errors().merchant; as message) {
+            <small class="field-error">{{ message }}</small>
+          }
+        </div>
+
+        <div class="field">
+          <label for="category">Category</label>
+          <p-select
+            inputId="category"
+            formControlName="category"
+            placeholder="Select a category"
+            [options]="categoryOptions()"
+            [fluid]="true"
+          />
+          @if (errors().category; as message) {
+            <small class="field-error">{{ message }}</small>
+          }
+        </div>
+
+        @if (balanceError(); as message) {
+          <p class="form-error">{{ message }}</p>
+        }
+
+        <div class="form-actions">
+          <button pButton type="button" [outlined]="true" [routerLink]="backLink()">Cancel</button>
+          <button pButton type="submit" [disabled]="saveDisabled()">Save</button>
+        </div>
+      </form>
+    </section>
+  </div>
+</app-main-layout>

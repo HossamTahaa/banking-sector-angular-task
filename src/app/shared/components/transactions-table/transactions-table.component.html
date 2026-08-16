@@ -1,0 +1,46 @@
+<div class="table-scroll">
+  <p-table
+    dataKey="id"
+    [value]="transactions()"
+    [paginator]="true"
+    [rows]="rowsPerPage"
+    [rowsPerPageOptions]="rowsPerPageOptions"
+  >
+    <ng-template #header>
+      <tr>
+        <th scope="col" pSortableColumn="date">Date <p-sort-icon field="date" /></th>
+        <th scope="col">Type</th>
+        <th scope="col">Merchant</th>
+        <th scope="col">Category</th>
+        <th scope="col" class="align-right" pSortableColumn="amount">
+          Amount <p-sort-icon field="amount" />
+        </th>
+      </tr>
+    </ng-template>
+
+    <ng-template #body let-row>
+      <tr
+        class="clickable"
+        tabindex="0"
+        (click)="rowClick.emit(row)"
+        (keydown.enter)="rowClick.emit(row)"
+      >
+        <td class="nowrap">{{ row.date | date: 'dd MMM yyyy' }}</td>
+        <td>
+          <span class="type-tag" [class.type-debit]="row.type === 'Debit'">{{ row.type }}</span>
+        </td>
+        <td>{{ row.merchant }}</td>
+        <td>{{ row.category }}</td>
+        <td class="align-right nowrap">
+          {{ row.amount | number: '1.2-2' }} <span class="currency">{{ currency() }}</span>
+        </td>
+      </tr>
+    </ng-template>
+
+    <ng-template #emptymessage>
+      <tr>
+        <td colspan="5">{{ emptyMessage() }}</td>
+      </tr>
+    </ng-template>
+  </p-table>
+</div>

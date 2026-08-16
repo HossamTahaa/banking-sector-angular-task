@@ -23,3 +23,17 @@ a {
     color: var(--p-highlight-color);
   }
 }
+
+@media (max-width: 48rem) {
+  .app-side-menu {
+    flex: 0 0 auto;
+    flex-direction: row;
+    overflow-x: auto;
+    border-right: none;
+    border-bottom: 1px solid var(--p-content-border-color);
+  }
+
+  a {
+    white-space: nowrap;
+  }
+}

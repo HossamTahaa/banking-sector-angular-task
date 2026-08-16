@@ -1,0 +1,20 @@
+[
+  {
+    "id": "A1001",
+    "customerId": "C001",
+    "type": "Current",
+    "currency": "EGP",
+    "balance": 15320.55,
+    "iban": "EG380019000000000123456789",
+    "status": "Active"
+  },
+  {
+    "id": "A1002",
+    "customerId": "C001",
+    "type": "Savings",
+    "currency": "EGP",
+    "balance": 72000.0,
+    "iban": "EG380019000000000987654321",
+    "status": "Active"
+  }
+]

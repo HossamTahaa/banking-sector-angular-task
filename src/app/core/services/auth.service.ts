@@ -1,38 +1,27 @@
 import { Injectable, computed, inject, signal } from '@angular/core';
-import { Observable, tap } from 'rxjs';
-import { ApiService } from './api.service';
 import { LocalStorageService } from './local-storage.service';
 
-const TOKEN_KEY = 'banking-portal.token';
-
-interface LoginResponse {
-  token: string;
-}
+const SESSION_KEY = 'banking-portal.session';
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
-  private readonly api = inject(ApiService);
   private readonly storage = inject(LocalStorageService);
 
-  private readonly token = signal<string | null>(this.storage.get<string>(TOKEN_KEY));
+  private readonly session = signal(this.storage.get<string>(SESSION_KEY));
 
-  readonly isAuthenticated = computed(() => this.token() !== null);
+  readonly isAuthenticated = computed(() => this.session() !== null);
 
-  login(username: string, password: string): Observable<LoginResponse> {
-    return this.api.post<LoginResponse>('auth/login', { username, password }).pipe(
-      tap((response) => {
-        this.storage.set(TOKEN_KEY, response.token);
-        this.token.set(response.token);
-      }),
-    );
+  // The session value is the signed-in email, which the header shows.
+  readonly currentUser = this.session.asReadonly();
+
+  // No backend to verify against yet, so any email that passed form validation is accepted.
+  login(email: string): void {
+    this.storage.set(SESSION_KEY, email);
+    this.session.set(email);
   }
 
   logout(): void {
-    this.storage.remove(TOKEN_KEY);
-    this.token.set(null);
-  }
-
-  currentToken(): string | null {
-    return this.token();
+    this.storage.remove(SESSION_KEY);
+    this.session.set(null);
   }
 }

@@ -1,0 +1,35 @@
+.table-scroll {
+  overflow-x: auto;
+}
+
+.clickable {
+  cursor: pointer;
+}
+
+.align-right {
+  text-align: right;
+}
+
+.nowrap {
+  white-space: nowrap;
+}
+
+.type-tag {
+  display: inline-block;
+  padding: 0.125rem 0.5rem;
+  border-radius: 999px;
+  background: var(--p-green-50, #f0fdf4);
+  color: var(--p-green-700, #15803d);
+  font-size: 0.8125rem;
+  font-weight: 500;
+}
+
+.type-debit {
+  background: var(--p-red-50, #fef2f2);
+  color: var(--p-red-700, #b91c1c);
+}
+
+.currency {
+  color: var(--p-text-muted-color);
+  font-size: 0.8125rem;
+}

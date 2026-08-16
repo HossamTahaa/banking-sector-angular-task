@@ -1,0 +1,201 @@
+<app-main-layout>
+  <a class="back-link" [routerLink]="customerLink()">Back to customer</a>
+
+  @if (loading()) {
+    <p class="state-message">Loading transactions…</p>
+  } @else if (account(); as currentAccount) {
+    <header class="account-header panel">
+      <div>
+        <h1 class="page-title">{{ currentAccount.id }}</h1>
+        <p class="account-meta">{{ currentAccount.type }} · {{ currentAccount.iban }}</p>
+      </div>
+
+      <div class="balance">
+        <span class="balance-label">Current balance</span>
+        <strong class="balance-value">
+          {{ balance() | number: '1.2-2' }} {{ currentAccount.currency }}
+        </strong>
+      </div>
+
+      <button pButton type="button" [routerLink]="createLink()">New Transaction</button>
+    </header>
+
+    <section class="panel filters" [formGroup]="filterForm">
+      <div class="filter-grid">
+        <div class="field">
+          <label for="dateRange">Date range</label>
+          <p-datepicker
+            inputId="dateRange"
+            formControlName="dateRange"
+            selectionMode="range"
+            dateFormat="dd M yy"
+            placeholder="Any date"
+            [readonlyInput]="true"
+            [showClear]="true"
+            [fluid]="true"
+          />
+        </div>
+
+        <div class="field">
+          <label for="type">Type</label>
+          <p-select inputId="type" formControlName="type" [options]="typeOptions" [fluid]="true" />
+        </div>
+
+        <div class="field">
+          <label for="category">Category</label>
+          <p-select
+            inputId="category"
+            formControlName="category"
+            [options]="categoryOptions()"
+            [fluid]="true"
+          />
+        </div>
+      </div>
+
+      <div class="filter-actions">
+        <p class="result-count">{{ rows().length }} shown</p>
+        <button pButton type="button" [outlined]="true" (click)="resetFilters()">Reset</button>
+      </div>
+    </section>
+
+    <div class="content-grid">
+      <section class="panel">
+        <div class="section-header">
+          <h2 class="panel-title">All transactions</h2>
+          <button
+            pButton
+            type="button"
+            [outlined]="true"
+            [disabled]="exportDisabled()"
+            (click)="exportCsv()"
+          >
+            Export CSV
+          </button>
+        </div>
+
+        <app-transactions-table
+          emptyMessage="No transactions match these filters."
+          [transactions]="rows()"
+          [currency]="currentAccount.currency"
+          (rowClick)="openDetail($event)"
+        />
+      </section>
+
+      <div class="side-column">
+        <section class="panel statement">
+          <div class="section-header">
+            <h2 class="panel-title">Recent Transactions</h2>
+            <p-select
+              class="statement-size"
+              [formControl]="statementSizeControl"
+              [options]="statementSizeOptions"
+            />
+          </div>
+
+          <ul class="statement-list">
+            @for (item of recentTransactions(); track item.id) {
+              <li class="statement-row">
+                <div class="statement-details">
+                  <span class="statement-merchant">{{ item.merchant }}</span>
+                  <span class="statement-date">{{ item.date | date: 'dd MMM yyyy' }}</span>
+                </div>
+
+                <span class="statement-amount" [class.is-credit]="item.type === 'Credit'">
+                  {{ item.type === 'Credit' ? '+' : '−' }}{{ item.amount | number: '1.2-2' }}
+                </span>
+              </li>
+            } @empty {
+              <li class="statement-empty">No transactions yet.</li>
+            }
+          </ul>
+        </section>
+
+        <section class="panel insights">
+          <div class="section-header">
+            <h2 class="panel-title">Monthly Insights</h2>
+            <p-select
+              class="month-select"
+              optionLabel="label"
+              optionValue="value"
+              placeholder="No months"
+              [formControl]="monthControl"
+              [options]="monthOptions()"
+            />
+          </div>
+
+          <dl class="insight-list">
+            <div class="insight-row">
+              <dt>Total Credit</dt>
+              <dd class="insight-amount is-credit">
+                +{{ insights().totalCredit | number: '1.2-2' }}
+              </dd>
+            </div>
+
+            <div class="insight-row">
+              <dt>Total Debit</dt>
+              <dd class="insight-amount is-debit">
+                −{{ insights().totalDebit | number: '1.2-2' }}
+              </dd>
+            </div>
+
+            <div class="insight-row">
+              <dt>Net</dt>
+              <dd class="insight-amount">{{ insights().net | number: '1.2-2' }}</dd>
+            </div>
+
+            <div class="insight-row">
+              <dt>Top Category</dt>
+              <dd>
+                @if (insights().topCategory; as top) {
+                  {{ top.category }} — {{ top.total | number: '1.2-2' }}
+                } @else {
+                  —
+                }
+              </dd>
+            </div>
+          </dl>
+        </section>
+      </div>
+    </div>
+    <p-dialog
+      header="Transaction details"
+      [visible]="detailVisible()"
+      [modal]="true"
+      [draggable]="false"
+      [dismissableMask]="true"
+      [style]="{ width: '26rem' }"
+      (onHide)="closeDetail()"
+    >
+      @if (selectedTransaction(); as detail) {
+        <dl class="detail-list">
+          <div class="detail-row">
+            <dt>Reference</dt>
+            <dd>{{ detail.id }}</dd>
+          </div>
+          <div class="detail-row">
+            <dt>Date</dt>
+            <dd>{{ detail.date | date: 'dd MMM yyyy' }}</dd>
+          </div>
+          <div class="detail-row">
+            <dt>Type</dt>
+            <dd>{{ detail.type }}</dd>
+          </div>
+          <div class="detail-row">
+            <dt>Merchant</dt>
+            <dd>{{ detail.merchant }}</dd>
+          </div>
+          <div class="detail-row">
+            <dt>Category</dt>
+            <dd>{{ detail.category }}</dd>
+          </div>
+          <div class="detail-row">
+            <dt>Amount</dt>
+            <dd>{{ detail.amount | number: '1.2-2' }} {{ currentAccount.currency }}</dd>
+          </div>
+        </dl>
+      }
+    </p-dialog>
+  } @else {
+    <p class="state-message">No account found for {{ accountId() }}.</p>
+  }
+</app-main-layout>

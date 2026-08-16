@@ -13,8 +13,5 @@ interface NavItem {
   styleUrl: './side-menu.component.scss',
 })
 export class SideMenuComponent {
-  readonly items: readonly NavItem[] = [
-    { label: 'Dashboard', route: '/dashboard' },
-    { label: 'Customers', route: '/customers' },
-  ];
+  readonly items: readonly NavItem[] = [{ label: 'Customers', route: '/dashboard' }];
 }
