@@ -4,7 +4,7 @@ An Angular front-end for a core banking console — customer and account managem
 
 The app runs entirely on mock data (static JSON + `localStorage`), so there is no backend to set up.
 
-**Live demo:** <!-- paste your Vercel URL here --> `https://<your-project>.vercel.app`
+**Live demo:** **https://banking-sector-angular-task.vercel.app/**
 
 ## Screenshots
 
