@@ -4,27 +4,29 @@ An Angular front-end for a core banking console — customer and account managem
 
 The app runs entirely on mock data (static JSON + `localStorage`), so there is no backend to set up.
 
+**Live demo:** <!-- paste your Vercel URL here --> `https://<your-project>.vercel.app`
+
 ## Screenshots
 
-| Sign in | Customers |
-| --- | --- |
+### Sign in
 
+<img alt="Sign in" src="https://github.com/user-attachments/assets/a54479e9-93ee-43ce-8d6e-b074e0debdc8" width="520" />
 
-<img width="529" height="448" alt="image" src="https://github.com/user-attachments/assets/a54479e9-93ee-43ce-8d6e-b074e0debdc8" />
-<img width="1912" height="524" alt="image" src="https://github.com/user-attachments/assets/a551972c-2cf5-4d7e-8108-24a06a86e7a6" />
+### Customers
 
+<img alt="Customer list" src="https://github.com/user-attachments/assets/a551972c-2cf5-4d7e-8108-24a06a86e7a6" width="900" />
 
+### Customer details
 
-| Customer details | Account transactions |
-| --- | --- |
-<img width="1919" height="464" alt="image" src="https://github.com/user-attachments/assets/e4bd76fa-bb57-4227-8cb8-a678a4ee331b" />
-<img width="1902" height="685" alt="image" src="https://github.com/user-attachments/assets/56ea82b0-ab3b-420a-a14f-cd2b7d6d0b43" />
+<img alt="Customer details" src="https://github.com/user-attachments/assets/e4bd76fa-bb57-4227-8cb8-a678a4ee331b" width="900" />
 
+### Account transactions
 
-| New transaction | Monthly insights |
-| --- | --- |
-<img width="610" height="453" alt="image" src="https://github.com/user-attachments/assets/c828ce07-ca69-4c57-8799-e6af294daa59" />
+<img alt="Account transactions" src="https://github.com/user-attachments/assets/56ea82b0-ab3b-420a-a14f-cd2b7d6d0b43" width="900" />
 
+### New transaction
+
+<img alt="New transaction" src="https://github.com/user-attachments/assets/c828ce07-ca69-4c57-8799-e6af294daa59" width="520" />
 
 ## Getting started
 
@@ -59,14 +61,14 @@ Sign-in stores a mock token in `localStorage` and redirects to the dashboard.
 
 ### Available scripts
 
-| Command | Description |
-| --- | --- |
-| `npm start` | Dev server at `http://localhost:4200/` |
-| `npm run build` | Production build into `dist/` |
-| `npm test` | Unit tests (Vitest) |
-| `npm run lint` | ESLint |
-| `npm run format` | Format with Prettier |
-| `npm run format:check` | Verify formatting without writing |
+| Command                | Description                            |
+| ---------------------- | -------------------------------------- |
+| `npm start`            | Dev server at `http://localhost:4200/` |
+| `npm run build`        | Production build into `dist/`          |
+| `npm test`             | Unit tests (Vitest)                    |
+| `npm run lint`         | ESLint                                 |
+| `npm run format`       | Format with Prettier                   |
+| `npm run format:check` | Verify formatting without writing      |
 
 ## Features
 
@@ -84,13 +86,13 @@ Sign-in stores a mock token in `localStorage` and redirects to the dashboard.
 
 All data lives in `src/assets/mock/`:
 
-| File | Read by | Notes |
-| --- | --- | --- |
-| `customers.json` | `CustomerService` | re-read on every load |
-| `accounts.json` | `AccountService` | **seed only** — see below |
-| `transactions.json` | `TransactionService` | **seed only** — see below |
-| `transaction-types.json` | `TransactionService` | Debit / Credit lookup |
-| `transaction-categories.json` | `TransactionService` | category dropdowns |
+| File                          | Read by              | Notes                     |
+| ----------------------------- | -------------------- | ------------------------- |
+| `customers.json`              | `CustomerService`    | re-read on every load     |
+| `accounts.json`               | `AccountService`     | **seed only** — see below |
+| `transactions.json`           | `TransactionService` | **seed only** — see below |
+| `transaction-types.json`      | `TransactionService` | Debit / Credit lookup     |
+| `transaction-categories.json` | `TransactionService` | category dropdowns        |
 
 `TransactionStoreService` is the single source of truth for transactions and balances at runtime. It seeds from `accounts.json` and `transactions.json` **once**, then treats `localStorage` as authoritative so added transactions survive a refresh.
 
@@ -131,15 +133,15 @@ src/app/
 
 ### Routes
 
-| Path | Guard | Screen |
-| --- | --- | --- |
-| `/` | — | redirects to `/login` |
-| `/login` | `guestGuard` | sign in |
-| `/dashboard` | `authGuard` | customer list |
-| `/customers/:cif` | `authGuard` | customer details |
-| `/customers/:cif/accounts/:accountId/transactions` | `authGuard` | account transactions |
-| `/customers/:cif/accounts/:accountId/transactions/new` | `authGuard` | create transaction |
-| `**` | — | redirects to `/dashboard` |
+| Path                                                   | Guard        | Screen                    |
+| ------------------------------------------------------ | ------------ | ------------------------- |
+| `/`                                                    | —            | redirects to `/login`     |
+| `/login`                                               | `guestGuard` | sign in                   |
+| `/dashboard`                                           | `authGuard`  | customer list             |
+| `/customers/:cif`                                      | `authGuard`  | customer details          |
+| `/customers/:cif/accounts/:accountId/transactions`     | `authGuard`  | account transactions      |
+| `/customers/:cif/accounts/:accountId/transactions/new` | `authGuard`  | create transaction        |
+| `**`                                                   | —            | redirects to `/dashboard` |
 
 Every route is lazy loaded with `loadComponent()`.
 
@@ -161,6 +163,30 @@ Every route is lazy loaded with `loadComponent()`.
 
 **A thin `ApiService`.** Wraps `HttpClient` and prefixes `environment.apiUrl`, which currently points at `assets/mock`. Pointing at a real backend is a one-line change.
 
+## Deployment
+
+Deployed on Vercel. [`vercel.json`](vercel.json) pins the two settings that matter:
+
+```json
+{
+  "outputDirectory": "dist/banking-portal/browser",
+  "rewrites": [{ "source": "/(.*)", "destination": "/index.html" }]
+}
+```
+
+The rewrite is required: without it, refreshing a deep link such as
+`/customers/C001/accounts/A1001/transactions` returns a 404, because the server looks for a file at
+that path instead of handing the route to Angular.
+
+To deploy from the dashboard: **Add New → Project**, import the repository, and accept the defaults —
+`vercel.json` supplies the build command and output directory. Or from the CLI:
+
+```bash
+npx vercel --prod
+```
+
+Mock data ships with the build, so the deployed app behaves exactly like local.
+
 ## Testing
 
 ```bash
@@ -169,12 +195,12 @@ npm test
 
 36 tests across 4 files (Vitest + jsdom, zoneless):
 
-| Suite | Covers |
-| --- | --- |
-| `transactions.component.spec.ts` | account isolation, filters, date ranges, mini statement, CSV export, detail dialog, monthly insights |
-| `transaction-create.component.spec.ts` | validation, the debit-exceeds-balance rule, balance adjustment, persistence |
-| `transactions-table.component.spec.ts` | pagination, row-click output, empty state |
-| `app.component.spec.ts` | bootstrap |
+| Suite                                  | Covers                                                                                               |
+| -------------------------------------- | ---------------------------------------------------------------------------------------------------- |
+| `transactions.component.spec.ts`       | account isolation, filters, date ranges, mini statement, CSV export, detail dialog, monthly insights |
+| `transaction-create.component.spec.ts` | validation, the debit-exceeds-balance rule, balance adjustment, persistence                          |
+| `transactions-table.component.spec.ts` | pagination, row-click output, empty state                                                            |
+| `app.component.spec.ts`                | bootstrap                                                                                            |
 
 ## Tech stack
 
