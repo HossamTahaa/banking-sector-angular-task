@@ -7,6 +7,7 @@ The app runs entirely on mock data (static JSON + `localStorage`), so there is n
 ## Screenshots
 
 | Sign in | Customers |
+
 <img width="529" height="448" alt="image" src="https://github.com/user-attachments/assets/a54479e9-93ee-43ce-8d6e-b074e0debdc8" />
 <img width="1912" height="524" alt="image" src="https://github.com/user-attachments/assets/a551972c-2cf5-4d7e-8108-24a06a86e7a6" />
 
