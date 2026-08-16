@@ -1,7 +1,11 @@
+// The login frame: a soft slate field with a highlight behind the centred card.
 .blank-layout-wrapper {
   display: flex;
   align-items: center;
   justify-content: center;
   min-height: 100vh;
-  padding: 1rem;
+  padding: 16px;
+  background:
+    radial-gradient(60rem 30rem at 50% -10%, var(--p-primary-50, #ecfdf5), transparent 70%),
+    var(--p-surface-50, #f8fafc);
 }

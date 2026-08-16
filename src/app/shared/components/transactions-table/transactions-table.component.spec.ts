@@ -39,7 +39,6 @@ describe('TransactionsTableComponent', () => {
     render(makeTransactions(25));
 
     expect(component.rowsPerPage).toBe(10);
-    expect(component.rowsPerPageOptions).toEqual([10, 20, 50]);
     expect(bodyRows()).toHaveLength(10);
   });
 

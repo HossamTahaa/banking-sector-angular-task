@@ -1,41 +1,42 @@
 <app-main-layout>
-  <a class="back-link" routerLink="/dashboard">Back to customers</a>
+  <div class="detail-page">
+    <a class="back-link" routerLink="/dashboard">← Back to customers</a>
 
-  @if (customer.isLoading()) {
-    <p class="state-message">Loading customer…</p>
-  } @else if (customer.value(); as details) {
-    <h1 class="page-title">{{ details.name }}</h1>
+    @if (customer.isLoading()) {
+      <div class="loading-state">
+        <p-progress-spinner strokeWidth="4" ariaLabel="Loading customer" />
+      </div>
+    } @else if (customer.value(); as details) {
+      <h1 class="page-title">
+        {{ details.name }}
+        <span class="title-meta">{{ details.cif }} · {{ details.segment }}</span>
+      </h1>
 
-    <div class="detail-grid">
-      <section class="panel">
-        <h2 class="panel-title">Customer information</h2>
+      <section class="card">
+        <h2 class="card-title">Customer information</h2>
 
-        <dl class="info-list">
-          <div class="info-row">
+        <dl class="info-grid">
+          <div class="info-field">
             <dt>CIF</dt>
-            <dd>{{ details.CIF }}</dd>
+            <dd>{{ details.cif }}</dd>
           </div>
-          <div class="info-row">
+          <div class="info-field">
             <dt>National ID</dt>
             <dd>{{ details.nationalId }}</dd>
           </div>
-          <div class="info-row">
-            <dt>Segment</dt>
-            <dd>{{ details.segment }}</dd>
-          </div>
-          <div class="info-row">
+          <div class="info-field">
             <dt>Email</dt>
             <dd>{{ details.email }}</dd>
           </div>
-          <div class="info-row">
+          <div class="info-field">
             <dt>Phone</dt>
             <dd>{{ details.phone }}</dd>
           </div>
         </dl>
       </section>
 
-      <section class="panel">
-        <h2 class="panel-title">Accounts</h2>
+      <section class="card">
+        <h2 class="card-title">Accounts</h2>
 
         <div class="table-scroll">
           <p-table dataKey="id" [value]="accounts()" [loading]="accountsLoading()">
@@ -43,7 +44,6 @@
               <tr>
                 <th scope="col">Account</th>
                 <th scope="col">Type</th>
-                <th scope="col">IBAN</th>
                 <th scope="col">Status</th>
                 <th scope="col" class="align-right">Balance</th>
               </tr>
@@ -53,20 +53,25 @@
               <tr>
                 <td>
                   <a
+                    class="account-number"
                     [routerLink]="[
                       '/customers',
-                      details.CIF,
+                      details.cif,
                       'accounts',
                       account.id,
                       'transactions',
                     ]"
                     >{{ account.id }}</a
                   >
+                  <span class="account-iban">{{ account.iban }}</span>
                 </td>
                 <td>{{ account.type }}</td>
-                <td class="iban">{{ account.iban }}</td>
-                <td>{{ account.status }}</td>
-                <td class="align-right">
+                <td>
+                  <span class="account-status" [class.open]="account.status === 'Active'">
+                    {{ account.status }}
+                  </span>
+                </td>
+                <td class="align-right balance">
                   {{ account.balance | number: '1.2-2' }} {{ account.currency }}
                 </td>
               </tr>
@@ -74,14 +79,14 @@
 
             <ng-template #emptymessage>
               <tr>
-                <td colspan="5">No accounts for this customer.</td>
+                <td colspan="4" class="state-message">No accounts for this customer.</td>
               </tr>
             </ng-template>
           </p-table>
         </div>
       </section>
-    </div>
-  } @else {
-    <p class="state-message">No customer found for CIF {{ cif() }}.</p>
-  }
+    } @else {
+      <p class="state-message">Customer not found.</p>
+    }
+  </div>
 </app-main-layout>

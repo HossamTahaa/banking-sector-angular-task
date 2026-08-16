@@ -10,7 +10,6 @@ export interface Transaction {
   category: string;
 }
 
-// The store generates the id, so callers supply everything else.
 export type NewTransaction = Omit<Transaction, 'id'>;
 
 export interface TransactionTypeOption {

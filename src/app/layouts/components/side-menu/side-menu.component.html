@@ -1,5 +1,11 @@
 <nav class="app-side-menu">
-  @for (item of items; track item.route) {
-    <a [routerLink]="item.route" routerLinkActive="active">{{ item.label }}</a>
+  <p class="workspace-label">Workspace</p>
+
+  @for (item of items; track item.label) {
+    <a class="nav-item" [routerLink]="item.route" routerLinkActive="active">
+      <i class="nav-icon" [class]="item.icon" aria-hidden="true"></i>
+      <span class="nav-label">{{ item.label }}</span>
+      <span class="nav-count">{{ customerCount().length }}</span>
+    </a>
   }
 </nav>

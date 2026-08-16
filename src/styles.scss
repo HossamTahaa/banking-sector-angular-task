@@ -1,23 +1,28 @@
+// The design's fixed greys sit outside PrimeNG's theme ramp, so they live here as one source.
+:root {
+  --app-border: #e2e8f0;
+  --app-surface: #f8fafc;
+  --app-emerald-soft: #ecfdf5;
+  --app-emerald-strong: #047857;
+  --app-radius: 6px;
+}
+
 html,
 body {
   height: 100%;
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  font-size: 14px;
+  font-family:
+    Inter,
+    -apple-system,
+    BlinkMacSystemFont,
+    'Segoe UI',
+    Roboto,
+    Helvetica,
+    Arial,
+    sans-serif;
   background: var(--p-content-background);
   color: var(--p-text-color);
-}
-
-// PrimeNG's styled mode ships components only, so the few utilities the layouts rely on live here.
-.d-flex {
-  display: flex;
-}
-
-.w-100 {
-  width: 100%;
-}
-
-.p-3 {
-  padding: 1rem;
 }
 
 // Plain surface shared by the pages. A bordered box needs no component behind it.
@@ -32,4 +37,49 @@ body {
   margin: 0 0 0.75rem;
   font-size: 1rem;
   font-weight: 600;
+}
+
+// Page furniture repeated by every routed page.
+.page-title {
+  margin: 0 0 1rem;
+  font-size: 1.375rem;
+  font-weight: 600;
+}
+
+.back-link {
+  display: inline-block;
+  margin-bottom: 0.75rem;
+  font-size: 0.875rem;
+}
+
+.state-message {
+  margin: 0;
+  color: var(--p-text-muted-color);
+}
+
+.table-scroll {
+  overflow-x: auto;
+}
+
+.align-right {
+  text-align: right;
+}
+
+.nowrap {
+  white-space: nowrap;
+}
+
+// Chips and buttons wrapping mid-label is the main way this layout breaks as it narrows.
+button,
+.p-tag {
+  white-space: nowrap;
+}
+
+// One pair of amount colours, so credit and debit never drift apart between cards and tables.
+.amount-credit {
+  color: var(--p-green-600);
+}
+
+.amount-debit {
+  color: var(--p-red-600);
 }

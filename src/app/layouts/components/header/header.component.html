@@ -1,12 +1,16 @@
 <header class="app-header">
-  <span class="app-title">Banking Portal</span>
+  <span class="brand">
+    <span class="brand-tile" aria-hidden="true">
+      <i class="pi pi-building-columns"></i>
+    </span>
+    <span class="brand-name">Banking Portal</span>
+  </span>
 
   <div class="header-actions">
-    @if (currentUser(); as email) {
-      <span class="header-user">{{ email }}</span>
-    }
+    <span class="avatar" aria-hidden="true">{{ initials() }}</span>
+    <span class="header-user">{{ displayName() }}</span>
 
-    <button pButton type="button" severity="secondary" [text]="true" (click)="logout()">
+    <button pButton type="button" size="small" [outlined]="true" (click)="logout()">
       Sign out
     </button>
   </div>

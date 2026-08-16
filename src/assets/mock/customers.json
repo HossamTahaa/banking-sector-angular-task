@@ -1,18 +1,62 @@
 [
   {
-    "CIF": "C001",
+    "cif": "C001",
     "name": "Ahmed Ali",
     "nationalId": "29810251234567",
-    "segment": "Retail",
     "email": "ahmed.ali@mail.com",
-    "phone": "+201001234567"
+    "phone": "+20 100 123 4567",
+    "segment": "Retail",
+    "accounts": 2,
+    "status": "Active"
   },
   {
-    "CIF": "C002",
+    "cif": "C002",
     "name": "Mona Hassan",
     "nationalId": "29904151234568",
-    "segment": "Priority",
     "email": "mona.hassan@mail.com",
-    "phone": "+201112345678"
+    "phone": "+20 111 234 5678",
+    "segment": "Priority",
+    "accounts": 4,
+    "status": "Active"
+  },
+  {
+    "cif": "C003",
+    "name": "Karim Fouad",
+    "nationalId": "29512031234569",
+    "email": "karim.fouad@mail.com",
+    "phone": "+20 122 887 4410",
+    "segment": "Retail",
+    "accounts": 1,
+    "status": "KYC review"
+  },
+  {
+    "cif": "C004",
+    "name": "Salma Nabil",
+    "nationalId": "30001181234570",
+    "email": "salma.nabil@mail.com",
+    "phone": "+20 155 902 1188",
+    "segment": "Business",
+    "accounts": 3,
+    "status": "Active"
+  },
+  {
+    "cif": "C005",
+    "name": "Youssef Adel",
+    "nationalId": "29707091234571",
+    "email": "youssef.adel@mail.com",
+    "phone": "+20 100 559 7723",
+    "segment": "Priority",
+    "accounts": 5,
+    "status": "Active"
+  },
+  {
+    "cif": "C006",
+    "name": "Dina Sabry",
+    "nationalId": "29806221234572",
+    "email": "dina.sabry@mail.com",
+    "phone": "+20 128 340 9915",
+    "segment": "Business",
+    "accounts": 2,
+    "status": "Dormant"
   }
 ]

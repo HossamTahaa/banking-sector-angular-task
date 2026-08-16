@@ -15,6 +15,7 @@ import { combineLatest, map, startWith } from 'rxjs';
 import { ButtonDirective } from 'primeng/button';
 import { DatePicker } from 'primeng/datepicker';
 import { Dialog } from 'primeng/dialog';
+import { InputText } from 'primeng/inputtext';
 import { Select } from 'primeng/select';
 import { Transaction } from '@core/models/transaction.model';
 import { ExportService } from '@core/services/export.service';
@@ -27,6 +28,7 @@ const ALL = 'All';
 const DEFAULT_STATEMENT_SIZE = 5;
 
 interface Filters {
+  search: string;
   dateRange: Date[] | null;
   type: string;
   category: string;
@@ -40,6 +42,9 @@ function withinDateRange(transaction: Transaction, range: Date[] | null): boolea
 }
 
 function matchesFilters(transaction: Transaction, filters: Filters): boolean {
+  const search = filters.search.trim().toLowerCase();
+
+  if (search && !transaction.merchant.toLowerCase().includes(search)) return false;
   if (filters.type !== ALL && transaction.type !== filters.type) return false;
   if (filters.category !== ALL && transaction.category !== filters.category) return false;
 
@@ -73,6 +78,7 @@ function toIsoDate(date: Date): string {
     DatePipe,
     DecimalPipe,
     DatePicker,
+    InputText,
     Select,
     Dialog,
     TransactionsTableComponent,
@@ -107,12 +113,17 @@ export class TransactionsComponent {
   readonly customerLink = computed(() => ['/customers', this.cif()]);
 
   readonly filterForm = this.formBuilder.group({
+    search: this.formBuilder.nonNullable.control(''),
     dateRange: this.formBuilder.control<Date[] | null>(null),
     type: this.formBuilder.nonNullable.control(ALL),
     category: this.formBuilder.nonNullable.control(ALL),
   });
 
-  readonly typeOptions = [ALL, 'Debit', 'Credit'];
+  readonly typeOptions = [
+    { label: 'All types', value: ALL },
+    { label: 'Debit', value: 'Debit' },
+    { label: 'Credit', value: 'Credit' },
+  ];
 
   private readonly categories = rxResource({
     stream: () => this.transactionService.getCategories(),
@@ -188,7 +199,7 @@ export class TransactionsComponent {
   readonly detailVisible = computed(() => this.selectedTransaction() !== null);
 
   resetFilters(): void {
-    this.filterForm.setValue({ dateRange: null, type: ALL, category: ALL });
+    this.filterForm.setValue({ search: '', dateRange: null, type: ALL, category: ALL });
   }
 
   openDetail(transaction: Transaction): void {

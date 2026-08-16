@@ -5,6 +5,7 @@
 }
 
 .content-wrapper {
+  display: flex;
   flex: 1;
   min-height: 0;
 
@@ -14,6 +15,9 @@
 }
 
 .content {
+  width: 100%;
   min-width: 0;
+  padding: 1.5rem;
+  background: var(--app-surface);
   overflow-y: auto;
 }

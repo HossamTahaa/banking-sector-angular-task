@@ -1,17 +1,21 @@
 <app-main-layout>
   <div class="page">
-    <a class="back-link" [routerLink]="backLink()">Back to transactions</a>
+    <a class="back-link" [routerLink]="backLink()">← Back to transactions</a>
 
-    <h1 class="page-title">New transaction</h1>
+    <header class="page-header">
+      <h1 class="page-title">New transaction</h1>
 
-    @if (account(); as currentAccount) {
-      <p class="account-meta">
-        {{ currentAccount.id }} · {{ currentAccount.type }} · available
-        {{ balance() | number: '1.2-2' }} {{ currentAccount.currency }}
-      </p>
-    }
+      @if (account(); as currentAccount) {
+        <p class="account-meta">
+          {{ currentAccount.id }} · {{ currentAccount.type }} · available
+          <span class="account-balance">
+            {{ balance() | number: '1.2-2' }} {{ currentAccount.currency }}
+          </span>
+        </p>
+      }
+    </header>
 
-    <section class="panel">
+    <section class="card">
       <form [formGroup]="form" (ngSubmit)="submit()">
         <div class="field">
           <label for="type">Type</label>

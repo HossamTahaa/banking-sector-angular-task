@@ -1,8 +1,14 @@
+export type CustomerSegment = 'Retail' | 'Priority' | 'Business';
+
+export type CustomerStatus = 'Active' | 'KYC review' | 'Dormant';
+
 export interface Customer {
-  CIF: string;
+  cif: string;
   name: string;
   nationalId: string;
-  segment: string;
   email: string;
   phone: string;
+  segment: CustomerSegment;
+  accounts: number;
+  status: CustomerStatus;
 }

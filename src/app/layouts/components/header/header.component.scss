@@ -1,31 +1,61 @@
 .app-header {
   display: flex;
   align-items: center;
-  height: 3.5rem;
+  height: 56px;
   padding: 0 1rem;
-  border-bottom: 1px solid var(--p-content-border-color);
-  background: var(--p-content-background);
+  border-bottom: 1px solid var(--app-border);
+  background: #fff;
 }
 
-.app-title {
-  font-size: 1.125rem;
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 0.625rem;
+}
+
+.brand-tile {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 30px;
+  border-radius: var(--app-radius);
+  background: var(--p-primary-color);
+  color: #fff;
+  font-size: 0.875rem;
+}
+
+.brand-name {
+  font-size: 1rem;
   font-weight: 600;
 }
 
 .header-actions {
   display: flex;
   align-items: center;
-  gap: 0.75rem;
+  gap: 0.625rem;
   margin-left: auto;
 }
 
+.avatar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background: var(--app-emerald-soft);
+  color: var(--app-emerald-strong);
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+
 .header-user {
-  color: var(--p-text-muted-color);
-  font-size: 0.875rem;
+  font-weight: 500;
 }
 
 @media (max-width: 30rem) {
-  // The email is the first thing to drop on a narrow screen; the button has to stay reachable.
+  // The name is the first thing to drop on a narrow screen; the button has to stay reachable.
   .header-user {
     display: none;
   }

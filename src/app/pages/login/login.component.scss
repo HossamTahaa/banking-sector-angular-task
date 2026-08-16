@@ -1,13 +1,58 @@
-.login-card {
-  display: block;
+.login-page {
   width: 100%;
-  max-width: 24rem;
+  max-width: 420px;
 }
 
-.login-title {
-  margin: 0 0 1.5rem;
-  font-size: 1.25rem;
+.brand {
+  margin-bottom: 1.5rem;
+  text-align: center;
+}
+
+.brand-logo {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  height: 48px;
+  margin-bottom: 0.75rem;
+  border-radius: 12px;
+  background: var(--p-primary-color);
+  color: var(--p-primary-contrast-color, #fff);
+
+  svg {
+    width: 26px;
+    height: 26px;
+  }
+}
+
+.brand-name {
+  margin: 0;
+  font-size: 18px;
   font-weight: 600;
+}
+
+.brand-tagline {
+  margin: 0.25rem 0 0;
+  color: var(--p-text-muted-color, #64748b);
+  font-size: 13px;
+}
+
+// Card styling goes through PrimeNG's own tokens rather than overriding its internals.
+.login-card {
+  display: block;
+  --p-card-body-padding: 2rem;
+  --p-card-border-radius: 8px;
+}
+
+.form-title {
+  margin: 0;
+  font-size: 22px;
+  font-weight: 600;
+}
+
+.form-helper {
+  margin: 0.25rem 0 1.5rem;
+  color: var(--p-text-muted-color, #64748b);
 }
 
 .field {
@@ -17,12 +62,99 @@
   margin-bottom: 1.25rem;
 
   label {
-    font-size: 0.875rem;
     font-weight: 500;
+  }
+
+  input {
+    min-height: 40px;
   }
 }
 
-.field-error {
-  color: var(--p-red-500, #e24c4c);
-  font-size: 0.75rem;
+.password-field {
+  position: relative;
+
+  input {
+    width: 100%;
+    padding-right: 2.5rem;
+  }
+}
+
+.password-toggle {
+  position: absolute;
+  top: 50%;
+  right: 0.25rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 2rem;
+  height: 2rem;
+  transform: translateY(-50%);
+  border: 0;
+  border-radius: var(--p-content-border-radius);
+  background: none;
+  color: var(--p-text-muted-color, #64748b);
+  cursor: pointer;
+
+  &:focus-visible {
+    outline: var(--p-focus-ring-width, 2px) solid var(--p-focus-ring-color, var(--p-primary-color));
+    outline-offset: -2px;
+  }
+
+  svg {
+    width: 18px;
+    height: 18px;
+  }
+}
+
+.options-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+// Padding keeps the whole label a comfortable tap target, not just the 20px box.
+.remember {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  min-height: 40px;
+  cursor: pointer;
+}
+
+.forgot-link {
+  color: var(--p-primary-color);
+  font-size: 0.875rem;
+  text-decoration: none;
+
+  &:hover {
+    text-decoration: underline;
+  }
+}
+
+.auth-error {
+  display: block;
+  margin-bottom: 1rem;
+}
+
+.secure-note {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.375rem;
+  margin: 1rem 0 0;
+  color: var(--p-text-muted-color, #94a3b8);
+  font-size: 12px;
+
+  svg {
+    width: 13px;
+    height: 13px;
+  }
+}
+
+@media (max-width: 480px) {
+  .login-card {
+    --p-card-body-padding: 1.25rem;
+  }
 }

@@ -3,7 +3,6 @@ import { AbstractControl, ValidationErrors, ValidatorFn } from '@angular/forms';
 export const notFutureDateValidator: ValidatorFn = (
   control: AbstractControl,
 ): ValidationErrors | null => {
-  // An empty date is a `required` concern, not this validator's.
   if (!control.value) return null;
 
   const selected = new Date(control.value);

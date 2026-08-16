@@ -1,42 +1,110 @@
 <app-main-layout>
+  <nav class="breadcrumb" aria-label="Breadcrumb">
+    <span>Dashboard</span>
+    <span class="breadcrumb-separator" aria-hidden="true">›</span>
+    <span class="breadcrumb-current">Customers</span>
+  </nav>
+
   <h1 class="page-title">Customers</h1>
 
   <section class="panel">
     @if (customers.error()) {
       <p class="state-message">Could not load customers.</p>
     } @else {
+      <div class="toolbar">
+        <div class="segment-filters">
+          @for (option of segmentFilters; track option) {
+            <button
+              type="button"
+              class="segment-chip"
+              [class.active]="segment() === option"
+              (click)="segment.set(option)"
+            >
+              {{ segmentLabel(option) }}
+              <span class="chip-count">{{ counts()[option] }}</span>
+            </button>
+          }
+        </div>
+
+        <span class="search-field">
+          <i class="pi pi-search" aria-hidden="true"></i>
+          <input
+            pInputText
+            type="search"
+            aria-label="Search customers"
+            placeholder="Search name, CIF, or email"
+            (input)="dt.filterGlobal($any($event.target).value, 'contains')"
+          />
+        </span>
+      </div>
+
       <div class="table-scroll">
         <p-table
-          dataKey="CIF"
-          [value]="customers.value()"
+          #dt
+          dataKey="cif"
+          [value]="visibleCustomers()"
           [loading]="customers.isLoading()"
           [rowHover]="true"
+          [paginator]="true"
+          [rows]="10"
+          [globalFilterFields]="['name', 'cif', 'email']"
         >
           <ng-template #header>
             <tr>
               <th scope="col">CIF</th>
-              <th scope="col">Name</th>
+              <th scope="col">Customer</th>
               <th scope="col">Segment</th>
-              <th scope="col">Email</th>
               <th scope="col">Phone</th>
+              <th scope="col" class="align-right">Accounts</th>
+              <th scope="col">Status</th>
+              <th scope="col" class="chevron-cell"><span class="sr-only">Open</span></th>
             </tr>
           </ng-template>
 
           <ng-template #body let-customer>
-            <tr>
+            <!-- The row navigates for mouse users; the CIF link keeps it reachable by keyboard. -->
+            <tr class="customer-row" (click)="openCustomer(customer.cif)">
               <td>
-                <a [routerLink]="['/customers', customer.CIF]">{{ customer.CIF }}</a>
+                <a class="cif" [routerLink]="['/customers', customer.cif]">{{ customer.cif }}</a>
               </td>
-              <td>{{ customer.name }}</td>
-              <td>{{ customer.segment }}</td>
-              <td>{{ customer.email }}</td>
-              <td>{{ customer.phone }}</td>
+
+              <td>
+                <span class="customer-cell">
+                  <span class="avatar" aria-hidden="true">{{ initials(customer.name) }}</span>
+                  <span class="customer-identity">
+                    <span class="customer-name">{{ customer.name }}</span>
+                    <span class="customer-email">{{ customer.email }}</span>
+                  </span>
+                </span>
+              </td>
+
+              <td>
+                <p-tag
+                  [value]="customer.segment"
+                  [severity]="segmentSeverity(customer.segment)"
+                  [class]="'segment-' + customer.segment.toLowerCase()"
+                />
+              </td>
+
+              <td class="nowrap">{{ customer.phone }}</td>
+              <td class="align-right">{{ customer.accounts }}</td>
+
+              <td>
+                <span class="status" [class]="statusClass(customer.status)">
+                  <span class="status-dot" aria-hidden="true"></span>
+                  {{ customer.status }}
+                </span>
+              </td>
+
+              <td class="chevron-cell">
+                <i class="pi pi-chevron-right" aria-hidden="true"></i>
+              </td>
             </tr>
           </ng-template>
 
           <ng-template #emptymessage>
             <tr>
-              <td colspan="5">No customers found.</td>
+              <td colspan="7" class="state-message">No customers match your search.</td>
             </tr>
           </ng-template>
         </p-table>

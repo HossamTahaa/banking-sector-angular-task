@@ -1,65 +1,102 @@
+// A read-only record page stays legible in a fixed column rather than stretching to the viewport.
+.detail-page {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  max-width: 960px;
+  margin-inline: auto;
+}
+
 .back-link {
-  display: inline-block;
-  margin-bottom: 0.75rem;
-  font-size: 0.875rem;
+  margin-bottom: 0;
+  color: var(--app-emerald-strong);
+  font-size: 13px;
+  text-decoration: none;
 }
 
 .page-title {
-  margin: 0 0 1rem;
-  font-size: 1.375rem;
+  display: flex;
+  align-items: baseline;
+  gap: 0.625rem;
+  flex-wrap: wrap;
+  margin: 0;
+  color: #020617;
+  font-size: 22px;
   font-weight: 600;
 }
 
-.detail-grid {
-  display: grid;
-  gap: 1rem;
-  grid-template-columns: minmax(0, 20rem) minmax(0, 1fr);
-
-  @media (max-width: 64rem) {
-    grid-template-columns: minmax(0, 1fr);
-  }
+.title-meta {
+  color: var(--p-text-muted-color);
+  font-size: 14px;
+  font-weight: 400;
 }
 
-.info-list {
+.card {
+  padding: 20px;
+  border: 1px solid var(--app-border);
+  border-radius: 8px;
+  background: #fff;
+}
+
+.card-title {
+  margin: 0 0 1rem;
+  font-size: 1rem;
+  font-weight: 600;
+}
+
+.info-grid {
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
   margin: 0;
 }
 
-.info-row {
-  display: flex;
-  justify-content: space-between;
-  gap: 1rem;
-  padding: 0.5rem 0;
-  border-bottom: 1px solid var(--p-content-border-color);
-
-  &:last-child {
-    border-bottom: none;
-  }
+.info-field {
+  min-width: 0;
 
   dt {
+    margin-bottom: 0.125rem;
     color: var(--p-text-muted-color);
-    font-size: 0.875rem;
+    font-size: 0.8125rem;
   }
 
   dd {
     margin: 0;
-    text-align: right;
-    word-break: break-word;
+    color: #020617;
+    overflow-wrap: anywhere;
   }
 }
 
-.table-scroll {
-  overflow-x: auto;
+.loading-state {
+  display: flex;
+  justify-content: center;
+  padding: 3rem 0;
 }
 
-.iban {
-  white-space: nowrap;
+.account-number {
+  display: block;
+  color: var(--app-emerald-strong);
+  font-weight: 500;
+  text-decoration: none;
 }
 
-.align-right {
-  text-align: right;
-}
-
-.state-message {
-  margin: 0;
+.account-iban {
+  display: block;
   color: var(--p-text-muted-color);
+  font-size: 0.75rem;
+}
+
+.account-status {
+  color: var(--p-text-muted-color);
+
+  &.open {
+    color: var(--app-emerald-strong);
+  }
+}
+
+// Tabular figures keep the decimal points aligned down the column.
+.balance {
+  font-variant-numeric: tabular-nums;
+  font-weight: 600;
+  white-space: nowrap;
 }

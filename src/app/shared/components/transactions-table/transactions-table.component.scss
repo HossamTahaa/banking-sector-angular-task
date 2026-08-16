@@ -14,22 +14,20 @@
   white-space: nowrap;
 }
 
-.type-tag {
-  display: inline-block;
-  padding: 0.125rem 0.5rem;
-  border-radius: 999px;
-  background: var(--p-green-50, #f0fdf4);
-  color: var(--p-green-700, #15803d);
-  font-size: 0.8125rem;
-  font-weight: 500;
-}
+// The sign and colour carry the direction, so the table needs no separate type column.
+.amount {
+  color: var(--p-red-600, #dc2626);
+  font-variant-numeric: tabular-nums;
+  font-weight: 600;
+  white-space: nowrap;
 
-.type-debit {
-  background: var(--p-red-50, #fef2f2);
-  color: var(--p-red-700, #b91c1c);
+  &.is-credit {
+    color: var(--p-green-600, #16a34a);
+  }
 }
 
 .currency {
   color: var(--p-text-muted-color);
   font-size: 0.8125rem;
+  font-weight: 400;
 }

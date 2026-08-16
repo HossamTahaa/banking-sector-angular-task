@@ -148,8 +148,7 @@ export class TransactionStoreService {
       : balance + transaction.amount;
   }
 
-  // Prefixed so client-side ids never collide with the seeded T#### values.
-  private nextTransactionId(): string {
+   private nextTransactionId(): string {
     return `TX-${Date.now()}`;
   }
 

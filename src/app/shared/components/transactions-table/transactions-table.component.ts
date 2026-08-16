@@ -18,5 +18,4 @@ export class TransactionsTableComponent {
   readonly rowClick = output<Transaction>();
 
   readonly rowsPerPage = 10;
-  readonly rowsPerPageOptions = [10, 20, 50];
 }

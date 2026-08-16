@@ -1,124 +1,173 @@
 # Banking Portal
 
-Angular front-end technical task for a banking sector application, built with Angular 22 and TypeScript.
+An Angular front-end for a core banking console — customer and account management, transaction history, and monthly insights. Built as a technical task with Angular 22, standalone components and signals.
 
-## Project status
+The app runs entirely on mock data (static JSON + `localStorage`), so there is no backend to set up.
 
-The application foundation is complete: routing, authentication, layouts, HTTP layer, domain models and tooling are all in place and working. The feature screens are currently rendered as placeholders — see [Roadmap](#roadmap) for what is intentionally left open.
+## Screenshots
 
-| Area | Status |
+| Sign in | Customers |
 | --- | --- |
-| Routing + lazy loading | ✅ Done |
-| Route guard / auth redirect | ✅ Done |
-| Auth service (token, signals, persistence) | ✅ Done |
-| HTTP API layer | ✅ Done |
-| Domain models (Customer, Account, Transaction) | ✅ Done |
-| App shell (header, side menu, layouts) | ✅ Done |
-| Toast notifications | ✅ Done |
-| Lint / format / strict TypeScript | ✅ Done |
-| Login form + validation | 🚧 Placeholder |
-| Dashboard widgets | 🚧 Placeholder |
-| Customer details view | 🚧 Placeholder |
+| ![Sign in](docs/screenshots/login.png) | ![Customers](docs/screenshots/dashboard.png) |
 
-## Tech stack
+| Customer details | Account transactions |
+| --- | --- |
+| ![Customer details](docs/screenshots/customer-details.png) | ![Transactions](docs/screenshots/transactions.png) |
 
-- **Angular 22** — standalone components, signals, new control flow
-- **TypeScript 6** — `strict` mode with additional safety flags enabled
-- **PrimeNG 22** + Aura theme — UI component library
-- **RxJS 7** — HTTP streams
-- **ESLint + Prettier** — linting and formatting
-- **Vitest** — unit test runner
+| New transaction | Monthly insights |
+| --- | --- |
+| ![New transaction](docs/screenshots/transaction-create.png) | ![Insights](docs/screenshots/insights.png) |
 
 ## Getting started
 
-**Requirements:** Node.js `^22.22.3`, `^24.15.0`, or `>=26.0.0`
+**Requirements:** Node.js `^22.22.3`, `^24.15.0`, or `>=26.0.0` (developed on Node 24.18, npm 11.16).
+
+### 1. Get the code
+
+```bash
+git clone https://github.com/HossamTahaa/banking-sector-angular-task.git
+cd banking-sector-angular-task
+```
+
+Or download the ZIP from the repository page (**Code → Download ZIP**) and extract it.
+
+### 2. Install and run
 
 ```bash
 npm install
 npm start
 ```
 
-The app runs at `http://localhost:4200/`.
+Open `http://localhost:4200/`.
+
+### 3. Sign in
+
+There is no real authentication. Any credentials that pass validation are accepted:
+
+- **Email** — any valid address, e.g. `staff@bank.com`
+- **Password** — at least 8 characters
+
+Sign-in stores a mock token in `localStorage` and redirects to the dashboard.
 
 ### Available scripts
 
 | Command | Description |
 | --- | --- |
-| `npm start` | Start the dev server with HMR |
-| `npm run build` | Production build |
-| `npm test` | Run unit tests (Vitest) |
-| `npm run lint` | Lint with ESLint |
+| `npm start` | Dev server at `http://localhost:4200/` |
+| `npm run build` | Production build into `dist/` |
+| `npm test` | Unit tests (Vitest) |
+| `npm run lint` | ESLint |
 | `npm run format` | Format with Prettier |
 | `npm run format:check` | Verify formatting without writing |
 
-### Configuration
+## Features
 
-The API base URL lives in the environment files — no secrets are committed.
+**Authentication** — reactive sign-in form with per-field validation, a mock `AuthService` returning a delayed observable, and route guards. `authGuard` sends signed-out users to `/login`; `guestGuard` keeps signed-in users off it.
 
-| File | `apiUrl` |
-| --- | --- |
-| `src/environments/environment.development.ts` | `http://localhost:3000/api` |
-| `src/environments/environment.ts` | `/api` |
+**Customers** — searchable list, drilling into a customer's profile and their accounts.
+
+**Transactions** — per-account history with filtering by date range, type and category; sortable, paginated table; a "Recent transactions" mini statement with a configurable size; and CSV export of the currently filtered rows.
+
+**Monthly insights** — per-month totals for credit, debit and net, plus the top spending category (debits only), with a month selector listing only months that have activity.
+
+**Create transaction** — validated form that adjusts the account balance immediately (debits subtract, credits add) and persists, so new entries survive a refresh.
+
+## Mock data
+
+All data lives in `src/assets/mock/`:
+
+| File | Read by | Notes |
+| --- | --- | --- |
+| `customers.json` | `CustomerService` | re-read on every load |
+| `accounts.json` | `AccountService` | **seed only** — see below |
+| `transactions.json` | `TransactionService` | **seed only** — see below |
+| `transaction-types.json` | `TransactionService` | Debit / Credit lookup |
+| `transaction-categories.json` | `TransactionService` | category dropdowns |
+
+`TransactionStoreService` is the single source of truth for transactions and balances at runtime. It seeds from `accounts.json` and `transactions.json` **once**, then treats `localStorage` as authoritative so added transactions survive a refresh.
+
+> **Editing `accounts.json` or `transactions.json` has no effect after the first run.** Clear the stored copy to re-seed:
+>
+> ```js
+> localStorage.removeItem('bank_transactions');
+> localStorage.removeItem('bank_balances');
+> location.reload();
+> ```
+
+Relationships are matched on exact strings: an account's `customerId` must equal a customer's `cif`, and a transaction's `accountId` must equal an account's `id`. Dates are `YYYY-MM-DD` — the month grouping and range filter both rely on that format.
 
 ## Project structure
 
 ```
 src/app/
-├── core/                  # singletons — imported once, never duplicated
-│   ├── guards/            # authGuard
-│   ├── models/            # Customer, Account, Transaction
-│   └── services/          # Api, Auth, LocalStorage, Toastr
+├── core/                        # singletons
+│   ├── guards/                  # authGuard, guestGuard
+│   ├── models/                  # Customer, Account, Transaction, MonthlySummary
+│   └── services/                # Api, Auth, LocalStorage, Toastr, Export,
+│                                # Customer, Account, Transaction, TransactionStore
 ├── layouts/
-│   ├── main-layout/       # header + side menu + content (authenticated)
-│   ├── blank-layout/      # centred, chrome-free (login)
-│   └── components/        # header, side-menu
-├── pages/                 # routed feature screens
+│   ├── main-layout/             # header + side menu + content (authenticated)
+│   ├── blank-layout/            # centred, chrome-free (login)
+│   └── components/              # header, side-menu
+├── pages/
 │   ├── login/
-│   ├── dashboard/
-│   └── customer-details/
-└── shared/                # reusable components and validators
+│   ├── dashboard/               # customer list
+│   ├── customer-details/        # profile + accounts
+│   ├── transactions/            # per-account history, insights, export
+│   └── transaction-create/
+└── shared/
+    ├── components/              # transactions-table (presentational)
+    └── validators/              # amount, merchant, not-future-date,
+                                 # debit-not-exceed-balance
 ```
 
 ### Routes
 
-| Path | Guard | Component |
+| Path | Guard | Screen |
 | --- | --- | --- |
 | `/` | — | redirects to `/login` |
-| `/login` | — | `LoginComponent` |
-| `/dashboard` | `authGuard` | `DashboardComponent` |
-| `/customers/:cif` | `authGuard` | `CustomerDetailsComponent` |
+| `/login` | `guestGuard` | sign in |
+| `/dashboard` | `authGuard` | customer list |
+| `/customers/:cif` | `authGuard` | customer details |
+| `/customers/:cif/accounts/:accountId/transactions` | `authGuard` | account transactions |
+| `/customers/:cif/accounts/:accountId/transactions/new` | `authGuard` | create transaction |
 | `**` | — | redirects to `/dashboard` |
+
+Every route is lazy loaded with `loadComponent()`.
 
 ## Architecture notes
 
-A few decisions worth calling out:
+**Signals for state, RxJS for streams.** `TransactionStoreService` holds state in signals and exposes read-only views plus per-account selectors. Components derive with `computed()`. RxJS is used where it fits — combining the filter form's `valueChanges` with the store's transactions via `combineLatest`.
 
-**Path aliases over relative imports.** `@core/*`, `@shared/*`, `@layouts/*`, `@pages/*` and `@env/*` are mapped in `tsconfig.json`, so imports stay readable and files can move without rewriting `../../../` chains.
+**Only the store touches `localStorage`.** Components never read or write it directly, so persistence is one file's concern.
 
-**Every route is lazy loaded.** Routes use `loadComponent()` rather than eager imports, so each screen ships as its own chunk and the initial bundle stays small — this matters on the low-bandwidth connections common in retail banking branches.
+**Presentational components stay dumb.** `TransactionsTableComponent` takes a list as an `input()` and emits a row click — no store access, no data loading.
 
-**Auth state is a signal, not a subject.** `AuthService` holds the token in a `signal` and exposes `isAuthenticated` as a `computed`. The guard reads it synchronously, so there is no subscription to manage and no chance of a stale value during navigation.
+**Custom validators are pure functions.** Each lives in its own file under `shared/validators/`. The cross-field debit rule takes the balance as a `Signal<number>` so it follows the store rather than a value captured when the form was built.
 
-**The guard redirects, it does not block.** `authGuard` returns a `UrlTree` to `/login` carrying a `returnUrl` query param, rather than returning `false`. The user lands back where they intended after signing in.
+**Route params as typed inputs.** `withComponentInputBinding()` is enabled, so pages receive `cif` and `accountId` via `input.required<string>()` instead of injecting `ActivatedRoute`.
 
-**Component input binding for route params.** `withComponentInputBinding()` is enabled, so `CustomerDetailsComponent` receives `cif` via `input.required<string>()` instead of injecting `ActivatedRoute` — less boilerplate and the input is typed.
+**Path aliases over relative imports.** `@core/*`, `@shared/*`, `@layouts/*`, `@pages/*` and `@env/*` are mapped in `tsconfig.json`.
 
-**A thin `ApiService` wrapper.** Generic `get`/`post`/`put`/`delete` over `HttpClient` that prefixes `environment.apiUrl`. Features never hardcode a base URL, so pointing at a different backend is a one-line change.
+**Strict everywhere.** `strict`, `noImplicitOverride`, `noPropertyAccessFromIndexSignature`, `noImplicitReturns`, `noFallthroughCasesInSwitch` and `strictTemplates` are all on. No `any` in the codebase.
 
-**Toasts behind an interface.** `ToastrService` wraps PrimeNG's `MessageService` with `success`/`info`/`error`. Swapping the toast library later touches one file.
+**A thin `ApiService`.** Wraps `HttpClient` and prefixes `environment.apiUrl`, which currently points at `assets/mock`. Pointing at a real backend is a one-line change.
 
-**Explicit dark mode.** PrimeNG's theme uses `darkModeSelector: '.dark'` instead of the OS preference, so the theme only changes when the app asks it to.
+## Testing
 
-**Strict everywhere.** `strict`, `noImplicitOverride`, `noPropertyAccessFromIndexSignature`, `noImplicitReturns`, `noFallthroughCasesInSwitch` and `strictTemplates` are all on.
+```bash
+npm test
+```
 
-## Roadmap
+36 tests across 4 files (Vitest + jsdom, zoneless):
 
-What I would build next, in order:
+| Suite | Covers |
+| --- | --- |
+| `transactions.component.spec.ts` | account isolation, filters, date ranges, mini statement, CSV export, detail dialog, monthly insights |
+| `transaction-create.component.spec.ts` | validation, the debit-exceeds-balance rule, balance adjustment, persistence |
+| `transactions-table.component.spec.ts` | pagination, row-click output, empty state |
+| `app.component.spec.ts` | bootstrap |
 
-1. **Login form** — reactive form with validation, wired to `AuthService.login()`, error handling via `ToastrService`
-2. **HTTP interceptor** — attach the bearer token to outgoing requests and redirect to `/login` on `401`
-3. **Customer list** — a `/customers` route with search, filtering and pagination (the side menu already links to it)
-4. **Dashboard** — account summary cards and recent transactions
-5. **Customer details** — profile, linked accounts and a transaction table for `/customers/:cif`
-6. **Tests** — unit coverage for the guard and services, component tests for the forms
-7. **i18n + RTL** — Arabic locale support, which a banking product in this region needs
+## Tech stack
+
+Angular 22 · TypeScript 6 · PrimeNG 22 (Aura theme) · RxJS 7 · Vitest · ESLint + Prettier
